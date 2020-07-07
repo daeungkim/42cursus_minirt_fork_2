@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   image.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmartin <lmartin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: dakim <dakim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/30 21:57:29 by lmartin           #+#    #+#             */
-/*   Updated: 2019/12/04 17:10:07 by lmartin          ###   ########.fr       */
+/*   Updated: 2020/07/07 16:25:01 by dakim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	put_pixel(t_args *args, int y, int color)
 /*
 ** Function for each thread (1 thread == 1 column)
 */
+#include <stdio.h>
 
 void	*thread_function(void *arguments)
 {
@@ -47,14 +48,26 @@ void	*thread_function(void *arguments)
 	args = (t_args *)arguments;
 	if (!(t_camera *)args->scene->cameras)
 		return (free_cpy_scene(args->scene) ? NULL : NULL);
+		// 카메라 복사
 	obs = ((t_camera *)args->scene->cameras->object)->origin;
 	y = -(args->scene->viewport->height / 2) - 1;
+	// y값도 내가 계산할 수 있음
 	while (++y <= args->scene->viewport->height / 2)
 	{
 		d = new_vector(
 args->x * (args->scene->viewplane->width / args->scene->viewport->width),
 y * (args->scene->viewplane->height / args->scene->viewport->height), 1);
+		//z를 1로 가정하였을 때 비율상의 값
+		// 구할 수 있음
+		if (args->x == 323 && y == -327)
+		{
+			printf("before %f %f %f\n", d->x, d->y, d->z);
+		}
 		rot(d, ((t_camera *)args->scene->cameras->object)->rotation);
+		if (args->x == 323 && y == -327)
+		{
+			printf("after %f %f %f\n", d->x, d->y, d->z);
+		}
 		c = trace_ray(*d, args->scene);
 		put_pixel(args, ((-(y - (args->scene->viewport->height / 2)))), c);
 		free(d);
@@ -77,6 +90,8 @@ t_args	*new_s_args(t_mlx *my_mlx, int i, pthread_mutex_t *lock)
 	args->data = my_mlx->data;
 	args->scene = cpy_scene(my_mlx->scene);
 	args->x = -(my_mlx->scene->viewport->width / 2) + 1 + i;
+	// 실제 x값을 얻기위한 처리
+	// 이 값은 나도 구할 수 있음
 	args->bpp = my_mlx->bpp;
 	args->size_line = my_mlx->size_line;
 	args->lock = lock;
@@ -99,6 +114,9 @@ void	create_image(t_mlx *my_mlx)
 	if (pthread_mutex_init(&lock, NULL) != 0)
 		pthread_error(-9);
 	i = -1;
+	// i는 x를 의미함
+	printf("viewplane = %f %f\n", my_mlx->scene->viewplane->width, my_mlx->scene->viewplane->height);
+	printf("viewport = %f %f\n", my_mlx->scene->viewport->width, my_mlx->scene->viewport->height);
 	while (++i < my_mlx->scene->viewport->width)
 	{
 		args = new_s_args(my_mlx, i, &lock);

@@ -2,8 +2,7 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parsing_object.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lmartin <lmartin@student.42.fr>            +#+  +:+       +#+        */
+/*                                                    +:+ +:+         +:+     */ /*   By: lmartin <lmartin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 23:59:42 by lmartin           #+#    #+#             */
 /*   Updated: 2019/12/04 17:24:23 by lmartin          ###   ########.fr       */

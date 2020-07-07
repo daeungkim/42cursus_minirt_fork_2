@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmartin <lmartin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: dakim <dakim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 02:43:38 by lmartin           #+#    #+#             */
-/*   Updated: 2019/12/04 17:08:47 by lmartin          ###   ########.fr       */
+/*   Updated: 2020/07/07 14:53:52 by dakim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ my_mlx->scene->viewport->width, my_mlx->scene->viewport->height, "miniRT");
 	return (my_mlx);
 }
 
+#include <stdio.h>
 int		main(int argc, char *argv[])
 {
 	t_mlx			*my_mlx;
@@ -52,6 +53,12 @@ int		main(int argc, char *argv[])
 	if (!(scene = parsing(fd)))
 		print_error_and_exit(-4);
 	close(fd);
+
+	t_camera *camera = scene->cameras->object;
+	printf("camera fov =  %d\n", camera->fov);
+	printf("camera origin = %f %f %f\n", camera->origin->x, camera->origin->y, camera->origin->z);
+	printf("camera fov =  %f %f %f\n", camera->rotation->x, camera->rotation->y, camera->rotation->z);
+
 	my_mlx = init_my_mlx(scene);
 	create_image(my_mlx);
 	if (argc == 2)
