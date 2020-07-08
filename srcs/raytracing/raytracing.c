@@ -6,7 +6,7 @@
 /*   By: dakim <dakim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:13:11 by lmartin           #+#    #+#             */
-/*   Updated: 2020/07/08 13:32:25 by dakim            ###   ########.fr       */
+/*   Updated: 2020/07/08 15:04:09 by dakim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,7 @@ int			trace_ray(t_vector direction, t_scene *scene)
 ->origin), direction, scene, &closest_object);
 	if (g_x == 58 && g_y == 106)
 	{
-		t_vector origin = *((t_camera*)scene->cameras->object)->origin;
-		printf("origin = %f %f %f\n", origin.x, origin.y, origin.z);
+		printf("\t\t\t\tdirection = %f %f %f\n", direction.x, direction.y, direction.z);
 	}
 	// 가장 가까운 물체를 찾는 함수
 	// 인자로 origin direction을 받음
