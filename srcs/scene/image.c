@@ -6,7 +6,7 @@
 /*   By: dakim <dakim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/30 21:57:29 by lmartin           #+#    #+#             */
-/*   Updated: 2020/07/07 16:25:01 by dakim            ###   ########.fr       */
+/*   Updated: 2020/07/08 13:40:15 by dakim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,27 +50,45 @@ void	*thread_function(void *arguments)
 		return (free_cpy_scene(args->scene) ? NULL : NULL);
 		// 카메라 복사
 	obs = ((t_camera *)args->scene->cameras->object)->origin;
+	if (args->x == 323)
+	{
+		printf("obs = %f %f %f\n", obs->x, obs->y, obs->z);
+	}
 	y = -(args->scene->viewport->height / 2) - 1;
 	// y값도 내가 계산할 수 있음
 	while (++y <= args->scene->viewport->height / 2)
 	{
+		if (args->x == 323 && y == -327)
+		{
+			printf("obs = %f %f %f\n", obs->x, obs->y, obs->z);
+		}
 		d = new_vector(
 args->x * (args->scene->viewplane->width / args->scene->viewport->width),
 y * (args->scene->viewplane->height / args->scene->viewport->height), 1);
 		//z를 1로 가정하였을 때 비율상의 값
 		// 구할 수 있음
-		if (args->x == 323 && y == -327)
-		{
-			printf("before %f %f %f\n", d->x, d->y, d->z);
-		}
+		g_x = args->x;
+		g_y = y;
 		rot(d, ((t_camera *)args->scene->cameras->object)->rotation);
+		// 로테이션이 수행된 벡터
+		// 구할 수 있음
+		if (g_x == 0 && g_y == 0)
+		{
+			printf("g_x = 0 g_y = 0 %f %f %f\n", d->x, d->y, d->z);
+		}
 		if (args->x == 323 && y == -327)
 		{
-			printf("after %f %f %f\n", d->x, d->y, d->z);
+			printf("d vector = %f %f %f\n",d->x, d->y, d->z);
 		}
 		c = trace_ray(*d, args->scene);
+		// 가장 가까운 물체를 계산하여 물체의 색을 리턴하는 함수
+		// 가장 가까운 문체가 없는경우 배경색을 리턴함
 		put_pixel(args, ((-(y - (args->scene->viewport->height / 2)))), c);
 		free(d);
+		if (args->x == 323 && y == -327)
+		{
+			printf("obs = %f %f %f\n", obs->x, obs->y, obs->z);
+		}
 		((t_camera *)args->scene->cameras->object)->origin = obs;
 		args->scene->depth = 3;
 	}
